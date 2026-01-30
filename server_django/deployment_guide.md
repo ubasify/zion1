@@ -1,13 +1,13 @@
 # Deployment Guide for RCCGHGZ Django Application
 
-This guide outlines the steps to deploy your Django application to a production environment (e.g., a VPS like DigitalOcean, Linode, AWS EC2, or a PaaS like Heroku/Railway).
+This guide outlines the steps to deploy your Django application to a production environment (e.g., a VPS like DigitalOcean, Linode, AWS EC2, or a PaaS like Heroku/Railway) using **SQLite**.
 
 ## 1. Prerequisites
 
 *   **Virtual Private Server (VPS)**: Ubuntu 22.04 LTS recommended.
 *   **Domain Name**: Pointed to your server's IP address.
 *   **Python 3.10+**: Installed on the server.
-*   **PostgreSQL**: Recommended for production databases (SQLite is not suitable for high concurrency).
+*   **SQLite**: Included with Python, so no extra installation is needed.
 
 ---
 
@@ -31,23 +31,23 @@ pip freeze > requirements.txt
    DEBUG=False
    SECRET_KEY=your-super-strong-secret-key-here
    ALLOWED_HOSTS=yourdomain.com,www.yourdomain.com,123.45.67.89
-   DATABASE_URL=postgres://user:password@localhost:5432/dbname
+   # DATABASE_URL is not needed for SQLite if using the default configuration below
    STRIPE_PUBLISHABLE_KEY=pk_live_...
    STRIPE_SECRET_KEY=sk_live_...
    ```
 
 ### C. Update `config/settings.py`
-Modify your settings to load from environment variables.
+Modify your settings to load from environment variables and configure SQLite.
 
 **Install needed packages first:**
 ```bash
-pip install dj-database-url whitenoise
+pip install whitenoise
 ```
+*(Note: `dj-database-url` is optional if you are not parsing a DATABASE_URL for Postgres)*
 
 **Edit `config/settings.py`:**
 ```python
 import os
-import dj_database-url
 from pathlib import Path
 from dotenv import load_dotenv
 
@@ -64,12 +64,12 @@ DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',')
 
-# Database
+# Database (SQLite)
 DATABASES = {
-    'default': dj_database_url.config(
-        default='sqlite:///' + str(BASE_DIR / 'db.sqlite3'),
-        conn_max_age=600
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
 }
 
 # Static Files (WhiteNoise recommended for serving static files)
@@ -94,25 +94,10 @@ STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY')
 ### A. Install System Packages
 ```bash
 sudo apt update
-sudo apt install python3-pip python3-venv python3-dev libpq-dev postgresql postgresql-contrib nginx curl
+sudo apt install python3-pip python3-venv python3-dev nginx curl
 ```
 
-### B. Setup Database
-```bash
-sudo -u postgres psql
-```
-Inside the SQL shell:
-```sql
-CREATE DATABASE rccghgz_db;
-CREATE USER rccghgz_user WITH PASSWORD 'strong_password';
-ALTER ROLE rccghgz_user SET client_encoding TO 'utf8';
-ALTER ROLE rccghgz_user SET default_transaction_isolation TO 'read committed';
-ALTER ROLE rccghgz_user SET timezone TO 'UTC';
-GRANT ALL PRIVILEGES ON DATABASE rccghgz_db TO rccghgz_user;
-\q
-```
-
-### C. Clone & Configure Project
+### B. Clone & Configure Project
 1. Clone your repo to `/var/www/rccghgz`.
 2. Create and activate a virtual environment:
    ```bash
@@ -121,15 +106,29 @@ GRANT ALL PRIVILEGES ON DATABASE rccghgz_db TO rccghgz_user;
    ```
 3. Install dependencies:
    ```bash
-   pip install -r requirements.txt gunicorn psycopg2-binary
+   pip install -r requirements.txt gunicorn
    ```
 4. Create the `.env` file with your production values.
+
+### C. Upload Database (Important for SQLite)
+Since you are using SQLite, you need to copy your local `db.sqlite3` file to the server if you want to keep your existing data.
+
+**From your local machine:**
+```bash
+scp db.sqlite3 root@your_server_ip:/var/www/rccghgz/
+```
+*Make sure the permissions allow the web server to write to it:*
+```bash
+# On the server:
+sudo chown www-data:www-data /var/www/rccghgz/db.sqlite3
+sudo chown www-data:www-data /var/www/rccghgz  # The directory must also be writable for SQLite journaling
+```
 
 ### D. Run Migrations & Collect Static
 ```bash
 python manage.py migrate
 python manage.py collectstatic
-python manage.py createsuperuser
+# python manage.py createsuperuser # Only if you didn't upload an existing DB with a superuser
 ```
 
 ---
