@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+
+{% block header_title %}{% if form.instance.pk %}Edit Visitor{% else %}Add New Visitor{% endif %}{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto">
+    <div class="glass p-8 rounded-3xl border border-white/10">
+        <form method="post" class="space-y-6">
+            {% csrf_token %}
+
+            <div class="space-y-6">
+                <h3
+                    class="text-lg font-bold text-slate-900 dark:text-white pb-2 border-b border-slate-100 dark:border-white/5">
+                    Personal Information</h3>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="space-y-1.5">
+                        <label class="text-xs font-bold text-slate-500 uppercase tracking-widest px-1">First
+                            Name</label>
+                        {{ form.first_name }}
+                    </div>
+                    <div class="space-y-1.5">
+                        <label class="text-xs font-bold text-slate-500 uppercase tracking-widest px-1">Last Name</label>
+                        {{ form.last_name }}
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="space-y-1.5">
+                        <label class="text-xs font-bold text-slate-500 uppercase tracking-widest px-1">Email</label>
+                        {{ form.email }}
+                    </div>
+                    <div class="space-y-1.5">
+                        <label class="text-xs font-bold text-slate-500 uppercase tracking-widest px-1">Phone
+                            Number</label>
+                        {{ form.phone }}
+                    </div>
+                    <div class="space-y-1.5">
+                        <label class="text-xs font-bold text-slate-500 uppercase tracking-widest px-1">WhatsApp
+                            Number</label>
+                        {{ form.whatsapp_number }}
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="space-y-1.5">
+                        <label class="text-xs font-bold text-slate-500 uppercase tracking-widest px-1">Gender</label>
+                        {{ form.gender }}
+                    </div>
+                    <div class="space-y-1.5">
+                        <label class="text-xs font-bold text-slate-500 uppercase tracking-widest px-1">Marital
+                            Status</label>
+                        {{ form.marital_status }}
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="space-y-1.5">
+                        <label class="text-xs font-bold text-slate-500 uppercase tracking-widest px-1">Date of
+                            Birth</label>
+                        {{ form.dob }}
+                    </div>
+                    <div class="space-y-1.5">
+                        <label class="text-xs font-bold text-slate-500 uppercase tracking-widest px-1">Visit
+                            Date</label>
+                        {{ form.visit_date }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="space-y-6 pt-6">
+                <h3
+                    class="text-lg font-bold text-slate-900 dark:text-white pb-2 border-b border-slate-100 dark:border-white/5">
+                    Additional Information</h3>
+
+                <div class="space-y-4">
+                    <div class="space-y-1.5">
+                        <label class="text-xs font-bold text-slate-500 uppercase tracking-widest px-1">Address</label>
+                        {{ form.address }}
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-1.5">
+                            <label class="text-xs font-bold text-slate-500 uppercase tracking-widest px-1">City</label>
+                            {{ form.city }}
+                        </div>
+                        <div class="space-y-1.5">
+                            <label class="text-xs font-bold text-slate-500 uppercase tracking-widest px-1">How did you
+                                hear about us?</label>
+                            {{ form.how_did_you_hear }}
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-1.5">
+                            <label class="text-xs font-bold text-slate-500 uppercase tracking-widest px-1">Invited
+                                By</label>
+                            {{ form.invited_by }}
+                        </div>
+                        <div class="flex items-center gap-3 pt-6 px-1">
+                            {{ form.interest_in_membership }}
+                            <label class="text-sm font-bold text-slate-700 dark:text-slate-300">Interested in
+                                Membership?</label>
+                        </div>
+                    </div>
+                    <div class="space-y-1.5">
+                        <label class="text-xs font-bold text-slate-500 uppercase tracking-widest px-1">Prayer
+                            Request</label>
+                        {{ form.prayer_request }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-4 pt-8">
+                <button type="submit"
+                    class="flex-1 bg-brand-navy dark:bg-brand-teal text-white py-4 rounded-2xl font-bold">
+                    {% if form.instance.pk %}Update Visitor Details{% else %}Register Visitor{% endif %}
+                </button>
+                <a href="{% url 'visitor-list' %}"
+                    class="px-8 py-4 bg-slate-100 dark:bg-slate-800 text-slate-500 rounded-2xl font-bold">
+                    Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    input,
+    select,
+    textarea {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        background-color: white;
+        border: 1px solid #e2e8f0;
+        border-radius: 0.75rem;
+        font-size: 0.875rem;
+    }
+
+    .dark input,
+    .dark select,
+    .dark textarea {
+        background-color: #0f172a;
+        border-color: rgba(255, 255, 255, 0.05);
+        color: white;
+    }
+</style>
+{% endblock %}

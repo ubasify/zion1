@@ -1,0 +1,309 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_head %}
+<!-- ApexCharts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+{% endblock %}
+
+{% block content %}
+<div class="px-6 py-8">
+    <div class="flex justify-between items-center mb-8">
+        <div>
+            <h1 class="text-2xl font-bold text-slate-800 dark:text-white">Analytics</h1>
+            <p class="text-slate-500 dark:text-slate-400">Overview of church growth and health</p>
+        </div>
+        <div class="flex gap-2">
+            <!-- Filter Form -->
+            <form method="get" class="flex gap-2" id="filterForm">
+                <select name="period" onchange="this.form.submit()"
+                    class="px-3 py-2 bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg text-sm text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="last_year" {% if selected_period=='last_year' or not selected_period %}selected{%
+                        endif %}>Previous Year</option>
+                    <option value="12m" {% if selected_period=='12m' %}selected{% endif %}>Last 12 Months</option>
+                    <option value="ytd" {% if selected_period=='ytd' %}selected{% endif %}>Year to Date</option>
+                    <option value="6m" {% if selected_period=='6m' %}selected{% endif %}>Last 6 Months</option>
+                    <option value="3m" {% if selected_period=='3m' %}selected{% endif %}>Last 3 Months</option>
+                    <option value="1m" {% if selected_period=='1m' %}selected{% endif %}>Last 30 Days</option>
+                </select>
+                <noscript>
+                    <button type="submit" class="px-3 py-2 bg-blue-600 text-white rounded-lg text-sm">Apply</button>
+                </noscript>
+            </form>
+
+            <button
+                class="px-4 py-2 bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-600 transition-colors flex items-center gap-2">
+                <i data-lucide="download" class="w-4 h-4"></i> Export
+            </button>
+        </div>
+    </div>
+
+    <!-- KPI Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <!-- Total Members -->
+        <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-200 dark:border-white/5 shadow-sm">
+            <div class="flex items-center gap-4 mb-4">
+                <div
+                    class="w-12 h-12 rounded-xl bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center text-blue-600 dark:text-blue-400">
+                    <i data-lucide="users" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <p class="text-sm text-slate-500 dark:text-slate-400">Total Members</p>
+                    <h3 class="text-2xl font-bold text-slate-900 dark:text-white">{{ total_members }}</h3>
+                </div>
+            </div>
+            <div class="flex items-center text-sm text-green-500">
+                <i data-lucide="trending-up" class="w-4 h-4 mr-1"></i>
+                <span>+ Stats Pending</span>
+            </div>
+        </div>
+
+        <!-- Total Families -->
+        <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-200 dark:border-white/5 shadow-sm">
+            <div class="flex items-center gap-4 mb-4">
+                <div
+                    class="w-12 h-12 rounded-xl bg-purple-50 dark:bg-purple-900/20 flex items-center justify-center text-purple-600 dark:text-purple-400">
+                    <i data-lucide="home" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <p class="text-sm text-slate-500 dark:text-slate-400">Total Families</p>
+                    <h3 class="text-2xl font-bold text-slate-900 dark:text-white">{{ total_families }}</h3>
+                </div>
+            </div>
+            <div class="flex items-center text-sm text-slate-400">
+                <span>Active Households</span>
+            </div>
+        </div>
+
+        <!-- Avg Attendance -->
+        <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-200 dark:border-white/5 shadow-sm">
+            <div class="flex items-center gap-4 mb-4">
+                <div
+                    class="w-12 h-12 rounded-xl bg-green-50 dark:bg-green-900/20 flex items-center justify-center text-green-600 dark:text-green-400">
+                    <i data-lucide="user-check" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <p class="text-sm text-slate-500 dark:text-slate-400">Avg Attendance</p>
+                    <h3 class="text-2xl font-bold text-slate-900 dark:text-white">{{ avg_attendance }}</h3>
+                </div>
+            </div>
+            <div class="text-xs text-slate-400">{{ period_label }}</div>
+        </div>
+
+        <!-- Financial Overview -->
+        <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-200 dark:border-white/5 shadow-sm">
+            <div class="flex items-center gap-4 mb-4">
+                <div
+                    class="w-12 h-12 rounded-xl bg-yellow-50 dark:bg-yellow-900/20 flex items-center justify-center text-yellow-600 dark:text-yellow-400">
+                    <i data-lucide="pound-sterling" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <p class="text-sm text-slate-500 dark:text-slate-400">Total Income</p>
+                    <h3 class="text-2xl font-bold text-slate-900 dark:text-white">£{{ total_income|floatformat:0 }}
+                    </h3>
+                </div>
+            </div>
+            <div class="text-xs text-slate-400">{{ period_label }}</div>
+        </div>
+    </div>
+
+    <!-- Charts Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+        <!-- Attendance Trend -->
+        <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-200 dark:border-white/5 shadow-sm">
+            <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-6">Attendance Trend ({{ period_label }})</h3>
+            <div id="attendanceChart" class="h-80 w-full"></div>
+        </div>
+
+        <!-- Finance Overview -->
+        <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-200 dark:border-white/5 shadow-sm">
+            <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-6">Income vs Expense ({{ period_label }})
+            </h3>
+            <div id="financeChart" class="h-80 w-full"></div>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Gender Demographics -->
+        <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-200 dark:border-white/5 shadow-sm">
+            <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-6">Gender Distribution</h3>
+            <div id="genderChart" class="h-64 w-full flex justify-center"></div>
+        </div>
+
+        <!-- Placeholder for Age Demographics -->
+        <div
+            class="lg:col-span-2 bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-200 dark:border-white/5 shadow-sm flex items-center justify-center">
+            <div class="text-center">
+                <div
+                    class="bg-slate-100 dark:bg-slate-700 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i data-lucide="bar-chart-2" class="w-8 h-8 text-slate-400"></i>
+                </div>
+                <h3 class="text-lg font-bold text-slate-900 dark:text-white">Age Demographics</h3>
+                <p class="text-slate-500 text-sm mt-1">Coming soon...</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{# Data Stores #}
+{{ chart_attendance_data|json_script:"att-data" }}
+{{ chart_attendance_labels|json_script:"att-labels" }}
+{{ chart_finance_income|json_script:"fin-inc" }}
+{{ chart_finance_expense|json_script:"fin-exp" }}
+{{ chart_finance_labels|json_script:"fin-labels" }}
+{{ chart_gender_series|json_script:"gen-series" }}
+{{ chart_gender_labels|json_script:"gen-labels" }}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        if (typeof ApexCharts === 'undefined') {
+            console.error('ApexCharts not loaded');
+            document.querySelectorAll('.h-80, .h-64').forEach(div => {
+                div.innerHTML = '<div class="flex items-center justify-center h-full text-red-500">Error loading charts (CDN blocked)</div>';
+            });
+            return;
+        }
+
+        // Helper to get data safely
+        const getData = (id) => {
+            try {
+                return JSON.parse(document.getElementById(id).textContent);
+            } catch (e) {
+                console.error('Error parsing data for', id, e);
+                return [];
+            }
+        };
+
+        // Data from DOM scripts
+        const attendanceData = getData('att-data');
+        const attendanceLabels = getData('att-labels');
+        const financeIncome = getData('fin-inc');
+        const financeExpense = getData('fin-exp');
+        const financeLabels = getData('fin-labels');
+        const genderSeries = getData('gen-series');
+        const genderLabels = getData('gen-labels');
+
+        // Common options
+        const isDark = document.documentElement.classList.contains('dark');
+        const chartTextColor = isDark ? '#94a3b8' : '#64748b';
+        const chartGridColor = isDark ? '#334155' : '#f1f5f9';
+
+        // 1. Attendance Chart
+        const attendanceOptions = {
+            series: [{
+                name: 'Avg Attendance',
+                data: attendanceData
+            }],
+            chart: {
+                type: 'area',
+                height: 320,
+                toolbar: { show: false },
+                background: 'transparent'
+            },
+            colors: ['#0f3460'],
+            fill: {
+                type: 'gradient',
+                gradient: {
+                    shadeIntensity: 1,
+                    opacityFrom: 0.3,
+                    opacityTo: 0.05,
+                    stops: [0, 90, 100]
+                }
+            },
+            dataLabels: { enabled: false },
+            stroke: { curve: 'smooth', width: 3 },
+            xaxis: {
+                categories: attendanceLabels,
+                labels: { style: { colors: chartTextColor } },
+                axisBorder: { show: false },
+                axisTicks: { show: false }
+            },
+            yaxis: {
+                labels: { style: { colors: chartTextColor } }
+            },
+            grid: {
+                borderColor: chartGridColor,
+                strokeDashArray: 4
+            },
+            theme: { mode: isDark ? 'dark' : 'light' }
+        };
+        new ApexCharts(document.querySelector("#attendanceChart"), attendanceOptions).render();
+
+        // 2. Finance Chart
+        const financeOptions = {
+            series: [{
+                name: 'Income',
+                data: financeIncome
+            }, {
+                name: 'Expense',
+                data: financeExpense
+            }],
+            chart: {
+                type: 'bar',
+                height: 320,
+                toolbar: { show: false },
+                background: 'transparent'
+            },
+            colors: ['#22c55e', '#ef4444'],
+            plotOptions: {
+                bar: {
+                    horizontal: false,
+                    columnWidth: '55%',
+                    borderRadius: 4
+                },
+            },
+            dataLabels: { enabled: false },
+            stroke: { show: true, width: 2, colors: ['transparent'] },
+            xaxis: {
+                categories: financeLabels,
+                labels: { style: { colors: chartTextColor } },
+                axisBorder: { show: false },
+                axisTicks: { show: false }
+            },
+            yaxis: {
+                labels: { style: { colors: chartTextColor } }
+            },
+            grid: {
+                borderColor: chartGridColor,
+                strokeDashArray: 4
+            },
+            theme: { mode: isDark ? 'dark' : 'light' }
+        };
+        new ApexCharts(document.querySelector("#financeChart"), financeOptions).render();
+
+        // 3. Gender Chart
+        const genderOptions = {
+            series: genderSeries,
+            labels: genderLabels,
+            chart: {
+                type: 'donut',
+                height: 250,
+                background: 'transparent'
+            },
+            colors: ['#3b82f6', '#ec4899', '#94a3b8'],
+            plotOptions: {
+                pie: {
+                    donut: {
+                        size: '70%',
+                        labels: {
+                            show: true,
+                            total: {
+                                show: true,
+                                label: 'Members',
+                                color: chartTextColor
+                            }
+                        }
+                    }
+                }
+            },
+            legend: {
+                position: 'bottom',
+                labels: { colors: chartTextColor }
+            },
+            stroke: { show: false },
+            theme: { mode: isDark ? 'dark' : 'light' }
+        };
+        new ApexCharts(document.querySelector("#genderChart"), genderOptions).render();
+    });
+</script>
+{% endblock %}

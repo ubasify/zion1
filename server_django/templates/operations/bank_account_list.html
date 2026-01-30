@@ -1,0 +1,66 @@
+﻿{% extends 'base.html' %}
+{% load humanize %}
+
+{% block content %}
+<div class="space-y-6">
+    <!-- Header -->
+    <div class="flex justify-between items-center">
+        <div>
+            <h1 class="text-2xl font-bold text-slate-800 dark:text-white">Bank Accounts</h1>
+            <p class="text-slate-500 dark:text-slate-400">Manage Treasury Accounts</p>
+        </div>
+        <a href="{% url 'bank-account-create' %}"
+            class="flex items-center gap-2 bg-brand-navy hover:bg-brand-dark text-white px-4 py-2 rounded-lg transition-colors">
+            <i data-lucide="plus"></i>
+            <span>Add Account</span>
+        </a>
+    </div>
+
+    <!-- Accounts Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% for account in bank_accounts %}
+        <div
+            class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-slate-100 dark:border-slate-700 flex flex-col justify-between h-full">
+            <div>
+                <div class="flex justify-between items-start mb-4">
+                    <div class="p-3 bg-brand-blue/10 text-brand-blue rounded-lg">
+                        <i data-lucide="landmark" class="w-6 h-6"></i>
+                    </div>
+                    <div class="flex gap-2">
+                        <a href="{% url 'bank-account-edit' account.pk %}"
+                            class="text-slate-400 hover:text-brand-navy transition-colors">
+                            <i data-lucide="edit-2" class="w-4 h-4"></i>
+                        </a>
+                    </div>
+                </div>
+                <h3 class="text-lg font-bold text-slate-800 dark:text-white mb-1">{{ account.name }}</h3>
+                <p class="text-sm text-slate-500 font-mono">{{ account.bank_name|default:"-" }} &bull; {{ account.account_number|default:"N/A" }}</p>
+            </div>
+
+            <div class="mt-6 pt-6 border-t border-slate-100 dark:border-slate-700">
+                <p class="text-xs uppercase tracking-wider text-slate-500 mb-1">Current Balance</p>
+                <div class="flex items-baseline gap-1">
+                    <span class="text-sm font-medium text-slate-400">{{ account.currency }}</span>
+                    <h2 class="text-2xl font-bold text-slate-900 dark:text-white">{{ account.current_balance|intcomma }}
+                    </h2>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div
+            class="col-span-full py-12 text-center bg-white dark:bg-slate-800 rounded-xl border border-dashed border-slate-300 dark:border-slate-700">
+            <div
+                class="w-12 h-12 bg-slate-100 dark:bg-slate-700 rounded-full flex items-center justify-center mx-auto mb-3">
+                <i data-lucide="landmark" class="w-6 h-6 text-slate-400"></i>
+            </div>
+            <h3 class="text-lg font-medium text-slate-900 dark:text-white">No Accounts Found</h3>
+            <p class="text-slate-500 mt-1">Get started by adding your first bank account.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+
+
+
