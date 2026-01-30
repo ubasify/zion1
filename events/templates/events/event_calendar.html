@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_head %}
+<!-- FullCalendar CSS -->
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js'></script>
+<style>
+    .fc-event {
+        cursor: pointer;
+        border: none;
+    }
+
+    .fc-daygrid-day-frame {
+        min-height: 100px;
+    }
+
+    .fc .fc-button-primary {
+        background-color: #1e293b;
+        border-color: #1e293b;
+    }
+
+    .fc .fc-button-primary:hover {
+        background-color: #0f172a;
+        border-color: #0f172a;
+    }
+
+    .fc .fc-more-link {
+        color: #1e293b;
+        font-weight: 600;
+    }
+
+    .dark .fc .fc-button-primary {
+        background-color: #3b82f6;
+        border-color: #3b82f6;
+    }
+
+    .dark .fc .fc-toolbar-title {
+        color: white;
+    }
+
+    .dark .fc .fc-col-header-cell-cushion {
+        color: #cbd5e1;
+    }
+
+    .dark .fc .fc-daygrid-day-number {
+        color: #cbd5e1;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="px-6 py-8 h-[calc(100vh-80px)]">
+    <div class="flex justify-between items-center mb-6">
+        <div>
+            <h1 class="text-2xl font-bold text-slate-800 dark:text-white">Event Calendar</h1>
+            <p class="text-slate-500 dark:text-slate-400">Overview of all scheduled activities</p>
+        </div>
+        <div class="flex gap-4">
+            <a href="{% url 'event-list' %}"
+                class="px-4 py-2 bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-600 transition-colors flex items-center gap-2">
+                <i data-lucide="list" class="w-4 h-4"></i> List View
+            </a>
+            <a href="{% url 'event-create' %}"
+                class="px-4 py-2 bg-brand-navy hover:bg-brand-dark text-white rounded-lg transition-colors flex items-center gap-2">
+                <i data-lucide="plus" class="w-4 h-4"></i> Create Event
+            </a>
+        </div>
+    </div>
+
+    <!-- Calendar Container -->
+    <div
+        class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-white/5 p-6 h-[calc(100%-80px)] shadow-sm">
+        <div id='calendar' class="h-full"></div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            headerToolbar: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'dayGridMonth,timeGridWeek,timeGridDay'
+            },
+            events: '/events/api/feed/', // URL to fetch events
+            eventClick: function (info) {
+                if (info.event.url) {
+                    window.location.href = info.event.url;
+                    info.jsEvent.preventDefault();
+                }
+            },
+            themeSystem: 'standard',
+            height: '100%',
+        });
+        calendar.render();
+    });
+</script>
+{% endblock %}

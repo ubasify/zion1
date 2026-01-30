@@ -1,0 +1,88 @@
+﻿{% extends 'base.html' %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto">
+    <!-- Header -->
+    <div class="mb-8">
+        <h1 class="text-2xl font-bold text-slate-800 dark:text-white">
+            {% if object %}Edit Budget{% else %}New Budget{% endif %}
+        </h1>
+        <p class="text-slate-500 dark:text-slate-400">Plan your financial year</p>
+    </div>
+
+    <!-- Form Card -->
+    <div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-slate-100 dark:border-slate-700">
+        <form method="post" class="space-y-6">
+            {% csrf_token %}
+
+            <div class="grid grid-cols-1 gap-6">
+                <!-- Category & Year -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Category
+                            *</label>
+                        <input type="text" name="category" value="{{ form.category.value|default:'' }}" required
+                            class="w-full px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-600 bg-transparent focus:ring-2 focus:ring-brand-navy outline-none transition-all placeholder:text-slate-400"
+                            placeholder="e.g. Salaries">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Fiscal Year
+                            *</label>
+                        <input type="number" name="year" value="{{ form.year.value|default:'2026' }}" required
+                            class="w-full px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-600 bg-transparent focus:ring-2 focus:ring-brand-navy outline-none transition-all">
+                    </div>
+                </div>
+
+                <!-- Amount -->
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Allocated Amount
+                        *</label>
+                    <div class="relative">
+                        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-medium">Â£</span>
+                        <input type="number" step="0.01" name="amount" value="{{ form.amount.value|default:'' }}"
+                            required
+                            class="w-full pl-8 pr-4 py-2 rounded-lg border border-slate-200 dark:border-slate-600 bg-transparent focus:ring-2 focus:ring-brand-navy outline-none transition-all">
+                    </div>
+                </div>
+
+                <!-- Dates -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Start
+                            Date</label>
+                        <input type="date" name="start_date" value="{{ form.start_date.value|date:'Y-m-d' }}"
+                            class="w-full px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-600 bg-transparent focus:ring-2 focus:ring-brand-navy outline-none transition-all">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">End
+                            Date</label>
+                        <input type="date" name="end_date" value="{{ form.end_date.value|date:'Y-m-d' }}"
+                            class="w-full px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-600 bg-transparent focus:ring-2 focus:ring-brand-navy outline-none transition-all">
+                    </div>
+                </div>
+
+                <!-- Description -->
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Description</label>
+                    <textarea name="description" rows="3"
+                        class="w-full px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-600 bg-transparent focus:ring-2 focus:ring-brand-navy outline-none transition-all"
+                        placeholder="Optional notes...">{{ form.description.value|default:'' }}</textarea>
+                </div>
+            </div>
+
+            <div class="pt-6 border-t border-slate-100 dark:border-slate-700 flex justify-end gap-3">
+                <a href="{% url 'budget-list' %}"
+                    class="px-4 py-2 text-slate-600 hover:bg-slate-50 hover:text-slate-900 rounded-lg transition-colors">Cancel</a>
+                <button type="submit"
+                    class="px-6 py-2 bg-brand-navy hover:bg-brand-dark text-white rounded-lg shadow-lg hover:shadow-xl transition-all">
+                    {% if object %}Save Changes{% else %}Create Budget{% endif %}
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+
+
+
