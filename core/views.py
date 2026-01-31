@@ -77,10 +77,14 @@ class UserSerializer(serializers.ModelSerializer):
         )
         return user
 
-class RegisterView(generics.CreateAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-    permission_classes = [AllowAny]
+from django.urls import reverse_lazy
+from django.views.generic import CreateView
+from .forms import UserRegistrationForm
+
+class RegisterView(CreateView):
+    template_name = 'core/register.html'
+    form_class = UserRegistrationForm
+    success_url = reverse_lazy('login')
 
 from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin

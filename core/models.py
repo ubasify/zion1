@@ -11,7 +11,18 @@ class User(AbstractUser):
         (4, 'User'),
     )
 
+    REGISTRATION_TYPE_CHOICES = (
+        ('first_timer', 'First Timer'),
+        ('worker', 'Worker'),
+        ('member', 'Member'),
+    )
+
     role_id = models.IntegerField(choices=ROLE_CHOICES, default=4)
+    registration_type = models.CharField(
+        max_length=20, 
+        choices=REGISTRATION_TYPE_CHOICES, 
+        default='member'
+    )
     ministry = models.ForeignKey('ministry.Ministry', on_delete=models.SET_NULL, null=True, blank=True)
     parish = models.ForeignKey('ministry.Parish', on_delete=models.SET_NULL, null=True, blank=True)
     member = models.OneToOneField('people.Member', on_delete=models.SET_NULL, null=True, blank=True, related_name='staff_account')
