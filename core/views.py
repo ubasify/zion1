@@ -14,6 +14,7 @@ from django.utils import timezone
 from datetime import timedelta
 from django.db.models import Avg, Sum, Count, Q
 from django.db.models.functions import TruncMonth, TruncWeek
+from .models import UserLoginLog
 import json
 
 User = get_user_model()
@@ -60,6 +61,43 @@ class AdminMinistryListView(SuperAdminRequiredMixin, ListView):
     model = Ministry
     template_name = "core/admin/ministry_list.html"
     context_object_name = "ministries"
+
+class AdminAuditLogView(SuperAdminRequiredMixin, ListView):
+    model = UserLoginLog
+    template_name = "core/admin/audit_logs.html"
+    context_object_name = "logs"
+    paginate_by = 50
+
+    def get_queryset(self):
+        queryset = super().get_queryset().select_related('user')
+        
+        # Filters
+        user_id = self.request.GET.get('user')
+        if user_id:
+            queryset = queryset.filter(user_id=user_id)
+            
+        ip_addr = self.request.GET.get('ip')
+        if ip_addr:
+            queryset = queryset.filter(ip_address__icontains=ip_addr)
+            
+        date_from = self.request.GET.get('date_from')
+        if date_from:
+            queryset = queryset.filter(login_datetime__date__gte=date_from)
+
+        date_to = self.request.GET.get('date_to')
+        if date_to:
+            queryset = queryset.filter(login_datetime__date__lte=date_to)
+
+        status = self.request.GET.get('status')
+        if status:
+            queryset = queryset.filter(status=status)
+
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['users'] = User.objects.all().order_by('username')
+        return context
 
 class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)

@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import path, include
 from core.views import (
     DashboardView, AdminDashboardView, AdminUserListView,
-    AdminParishListView, AdminMinistryListView
+    AdminParishListView, AdminMinistryListView, AdminAuditLogView
 )
 from django.views.generic import RedirectView
 
@@ -16,6 +16,7 @@ urlpatterns = [
     path('admin-panel/users/', AdminUserListView.as_view(), name='admin-user-list'),
     path('admin-panel/parishes/', AdminParishListView.as_view(), name='admin-parish-list'),
     path('admin-panel/ministries/', AdminMinistryListView.as_view(), name='admin-ministry-list'),
+    path('admin-panel/audit-logs/', AdminAuditLogView.as_view(), name='admin-audit-logs'),
 
     path('people/', include('people.urls')),
     path('events/', include('events.urls')),

@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+
+{% block header_title %}Login Audit Logs{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <!-- Filters -->
+    <div class="glass p-6 rounded-2xl border border-white/10">
+        <form method="get" class="grid grid-cols-1 md:grid-cols-5 gap-4">
+            <div>
+                <label class="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">User</label>
+                <select name="user"
+                    class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-brand-teal transition-all">
+                    <option value="">All Users</option>
+                    {% for u in users %}
+                    <option value="{{ u.id }}" {% if request.GET.user==u.id|stringformat:"s" %}selected{% endif %}>{{
+                        u.username }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">IP Address</label>
+                <input type="text" name="ip" value="{{ request.GET.ip }}" placeholder="Filter by IP..."
+                    class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-brand-teal transition-all">
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">Date From</label>
+                <input type="date" name="date_from" value="{{ request.GET.date_from }}"
+                    class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-brand-teal transition-all">
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">Date To</label>
+                <input type="date" name="date_to" value="{{ request.GET.date_to }}"
+                    class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-brand-teal transition-all">
+            </div>
+            <div class="flex items-end">
+                <button type="submit"
+                    class="w-full bg-brand-navy dark:bg-brand-teal text-white font-bold py-2.5 rounded-xl hover:scale-[1.02] transition-all shadow-lg active:scale-95 flex items-center justify-center gap-2">
+                    <i data-lucide="filter" class="w-4 h-4"></i>
+                    Apply Filters
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Table -->
+    <div class="glass rounded-2xl border border-white/10 overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-slate-50/50 dark:bg-white/5 border-b border-white/10">
+                        <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-widest">User</th>
+                        <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-widest">Login Time</th>
+                        <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-widest">IP Address</th>
+                        <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-widest">Status</th>
+                        <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-widest">Device/Browser
+                        </th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-white/5">
+                    {% for log in logs %}
+                    <tr class="hover:bg-white/5 transition-all">
+                        <td class="px-6 py-4">
+                            <div class="flex items-center gap-3">
+                                <div
+                                    class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center font-bold text-slate-400 text-xs text-uppercase">
+                                    {{ log.user.username|first|upper }}
+                                </div>
+                                <div>
+                                    <p class="text-sm font-bold text-slate-900 dark:text-white">{{ log.user.username }}
+                                    </p>
+                                    <p class="text-[10px] text-slate-500">{{ log.user.email }}</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="text-xs text-slate-600 dark:text-slate-300 font-medium">
+                                {{ log.login_datetime|date:"M d, Y" }} at {{ log.login_datetime|date:"H:i:s" }}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4">
+                            <code
+                                class="text-[10px] bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded text-slate-500">{{ log.ip_address }}</code>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span
+                                class="px-2 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider
+                                {% if log.status == 'success' %}bg-green-100 text-green-600{% else %}bg-red-100 text-red-600{% endif %}">
+                                {{ log.status }}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4">
+                            <p class="text-[10px] text-slate-500 truncate max-w-[200px]" title="{{ log.user_agent }}">
+                                {{ log.user_agent }}
+                            </p>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="px-6 py-12 text-center">
+                            <div class="flex flex-col items-center gap-2 text-slate-400">
+                                <i data-lucide="info" class="w-8 h-8"></i>
+                                <p class="text-sm font-medium">No login logs found for these filters.</p>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Pagination -->
+    {% if is_paginated %}
+    <div class="flex items-center justify-between px-6 py-4 glass rounded-xl border border-white/10">
+        <div class="text-xs text-slate-500">
+            Showing Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+        </div>
+        <div class="flex items-center gap-2">
+            {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}{% for key,value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}"
+                class="p-2 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors text-slate-500">
+                <i data-lucide="chevron-left" class="w-4 h-4"></i>
+            </a>
+            {% endif %}
+
+            {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}{% for key,value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}"
+                class="p-2 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors text-slate-500">
+                <i data-lucide="chevron-right" class="w-4 h-4"></i>
+            </a>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
