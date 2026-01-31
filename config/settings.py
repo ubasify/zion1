@@ -14,7 +14,13 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'fallback-dev-key')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',')
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1,zion1-d3fcb4dwh3dkhkcq.canadacentral-01.azurewebsites.net').split(',')
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://zion1-d3fcb4dwh3dkhkcq.canadacentral-01.azurewebsites.net',
+    'http://localhost',
+    'http://127.0.0.1',
+]
 
 # Application definition
 INSTALLED_APPS = [
