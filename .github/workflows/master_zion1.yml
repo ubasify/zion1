@@ -12,7 +12,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     permissions:
       contents: read #This is required for actions/checkout
 
@@ -55,7 +55,7 @@ jobs:
       # 2. Refer to sample workflows for alternative deployment strategies: https://github.com/Azure/actions-workflow-samples/tree/master/AppService
 
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     needs: build
     permissions:
       id-token: write #This is required for requesting the JWT
