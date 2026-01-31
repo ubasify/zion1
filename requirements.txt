@@ -215,7 +215,7 @@ typer==0.15.1
 typing-inspect==0.9.0
 typing_extensions
 tzdata==2024.2
-ua-parser==1.0.1
+ua-parser
 ua-parser-builtins
 urllib3==2.3.0
 user-agents==2.2.0
