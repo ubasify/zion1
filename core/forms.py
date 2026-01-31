@@ -25,11 +25,12 @@ class UserRegistrationForm(UserCreationForm):
         user.email = self.cleaned_data['email']
         user.registration_type = self.cleaned_data['registration_type']
         
-        # As requested: "Afterwards user should be able to login as administrator"
-        # We set role_id to 1 (Super Admin) and staff/superuser status
-        user.role_id = 1
-        user.is_staff = True
-        user.is_superuser = True
+        # Assign standard User role (role_id=4)
+        # Only Super Admins should have access to the Admin-Panel module.
+        # User accounts are created as standard users and can be promoted by an existing Super Admin.
+        user.role_id = 4
+        user.is_staff = False
+        user.is_superuser = False
         
         if commit:
             user.save()
