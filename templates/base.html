@@ -26,7 +26,8 @@
                             dark: '#16213e',
                             teal: '#1cd6ce',
                             red: '#e94560',
-                            light: '#f1f1f1'
+                            light: '#f1f1f1',
+                            offwhite: '#f8f9fa'
                         }
                     },
                     fontFamily: {
@@ -95,7 +96,7 @@
 </head>
 
 <body
-    class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-100 font-sans antialiased flex h-screen overflow-hidden transition-colors duration-300"
+    class="bg-brand-offwhite text-slate-800 dark:bg-slate-900 dark:text-slate-100 font-sans antialiased flex h-screen overflow-hidden transition-colors duration-300"
     x-data="{ 
         sidebarOpen: false, 
         sidebarCollapsed: localStorage.getItem('sidebarCollapsed') == = 'true',
@@ -415,7 +416,7 @@
 
     <!-- Main Content -->
     <main
-        class="flex-1 flex flex-col min-w-0 h-screen overflow-hidden relative bg-slate-50 dark:bg-slate-900 transition-colors duration-300">
+        class="flex-1 flex flex-col min-w-0 h-screen overflow-hidden relative bg-brand-offwhite dark:bg-slate-900 transition-colors duration-300">
         <!-- Header -->
         <header class="h-16 glass sticky top-0 z-30 flex items-center justify-between px-4 lg:px-8">
             <div class="flex items-center gap-4">

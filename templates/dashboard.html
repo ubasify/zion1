@@ -52,10 +52,10 @@
         <!-- Filter Form -->
         <form method="get" class="flex items-center gap-2">
             <input type="date" name="start_date" value="{{ request.GET.start_date }}"
-                class="bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white text-xs rounded px-2 py-1.5 focus:ring-1 focus:ring-blue-500 outline-none shadow-sm">
+                class="bg-brand-offwhite dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white text-xs rounded px-2 py-1.5 focus:ring-1 focus:ring-blue-500 outline-none shadow-sm">
             <span class="text-slate-500 text-xs">-</span>
             <input type="date" name="end_date" value="{{ request.GET.end_date }}"
-                class="bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white text-xs rounded px-2 py-1.5 focus:ring-1 focus:ring-blue-500 outline-none shadow-sm">
+                class="bg-brand-offwhite dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white text-xs rounded px-2 py-1.5 focus:ring-1 focus:ring-blue-500 outline-none shadow-sm">
 
             <button type="submit"
                 class="bg-blue-600 hover:bg-blue-500 text-white px-3 py-1.5 rounded text-xs font-bold transition-colors shadow-sm">
@@ -71,7 +71,7 @@
         <div class="flex items-center gap-3">
             <span class="text-[10px] text-slate-500">Updated: {% now "g:i A" %}</span>
             <button onclick="window.print()"
-                class="bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-white px-3 py-1.5 rounded-lg text-xs font-medium border border-slate-300 dark:border-slate-700 flex items-center gap-2 transition-all shadow-sm">
+                class="bg-brand-offwhite dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-white px-3 py-1.5 rounded-lg text-xs font-medium border border-slate-300 dark:border-slate-700 flex items-center gap-2 transition-all shadow-sm">
                 <i data-lucide="printer" class="w-3 h-3"></i> Print
             </button>
         </div>
@@ -91,7 +91,7 @@
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
         <!-- Card 1: Total Attendance -->
         <div
-            class="bg-white dark:bg-slate-800/50 p-6 rounded-2xl border border-slate-200 dark:border-white/5 relative overflow-hidden group shadow-sm dark:shadow-none transition-colors">
+            class="bg-brand-offwhite dark:bg-slate-800/50 p-6 rounded-2xl border border-slate-200 dark:border-white/5 relative overflow-hidden group shadow-sm dark:shadow-none transition-colors">
             <div class="flex justify-between items-start mb-4">
                 <div class="p-3 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400">
                     <i data-lucide="users" class="w-6 h-6"></i>
@@ -108,7 +108,7 @@
 
         <!-- Card 2: Total Members -->
         <div
-            class="bg-white dark:bg-slate-800/50 p-6 rounded-2xl border border-slate-200 dark:border-white/5 relative overflow-hidden group shadow-sm dark:shadow-none transition-colors">
+            class="bg-brand-offwhite dark:bg-slate-800/50 p-6 rounded-2xl border border-slate-200 dark:border-white/5 relative overflow-hidden group shadow-sm dark:shadow-none transition-colors">
             <div class="flex justify-between items-start mb-4">
                 <div class="p-3 rounded-xl bg-cyan-500/10 text-cyan-600 dark:text-cyan-400">
                     <i data-lucide="contact" class="w-6 h-6"></i>
@@ -125,7 +125,7 @@
 
         <!-- Card 3: New Visitors -->
         <div
-            class="bg-white dark:bg-slate-800/50 p-6 rounded-2xl border border-slate-200 dark:border-white/5 relative overflow-hidden group shadow-sm dark:shadow-none transition-colors">
+            class="bg-brand-offwhite dark:bg-slate-800/50 p-6 rounded-2xl border border-slate-200 dark:border-white/5 relative overflow-hidden group shadow-sm dark:shadow-none transition-colors">
             <div class="flex justify-between items-start mb-4">
                 <div class="p-3 rounded-xl bg-purple-500/10 text-purple-600 dark:text-purple-400">
                     <i data-lucide="map-pin" class="w-6 h-6"></i>
@@ -142,7 +142,7 @@
 
         <!-- Card 4: Weekly Giving -->
         <div
-            class="bg-white dark:bg-slate-800/50 p-6 rounded-2xl border border-slate-200 dark:border-white/5 relative overflow-hidden group shadow-sm dark:shadow-none transition-colors">
+            class="bg-brand-offwhite dark:bg-slate-800/50 p-6 rounded-2xl border border-slate-200 dark:border-white/5 relative overflow-hidden group shadow-sm dark:shadow-none transition-colors">
             <div class="flex justify-between items-start mb-4">
                 <div class="p-3 rounded-xl bg-green-500/10 text-green-600 dark:text-green-400">
                     <i data-lucide="banknote" class="w-6 h-6"></i>
@@ -162,7 +162,7 @@
 
         <!-- Card 5: Retention Rate -->
         <div
-            class="bg-white dark:bg-slate-800/50 p-6 rounded-2xl border border-slate-200 dark:border-white/5 relative overflow-hidden group shadow-sm dark:shadow-none transition-colors">
+            class="bg-brand-offwhite dark:bg-slate-800/50 p-6 rounded-2xl border border-slate-200 dark:border-white/5 relative overflow-hidden group shadow-sm dark:shadow-none transition-colors">
             <div class="flex justify-between items-start mb-4">
                 <div class="p-3 rounded-xl bg-orange-500/10 text-orange-600 dark:text-orange-400">
                     <i data-lucide="user-check" class="w-6 h-6"></i>
@@ -183,7 +183,7 @@
 
         <!-- Attendance Trends Chart -->
         <div
-            class="lg:col-span-2 bg-white dark:bg-slate-800/50 p-6 rounded-2xl border border-slate-200 dark:border-white/5 shadow-sm dark:shadow-none transition-colors">
+            class="lg:col-span-2 bg-brand-offwhite dark:bg-slate-800/50 p-6 rounded-2xl border border-slate-200 dark:border-white/5 shadow-sm dark:shadow-none transition-colors">
             <div class="flex justify-between items-center mb-6">
                 <div>
                     <h3 class="text-lg font-bold text-slate-900 dark:text-white">Attendance Trends</h3>
@@ -207,7 +207,7 @@
 
         <!-- Weekly Service Summary -->
         <div
-            class="bg-white dark:bg-slate-800/50 p-6 rounded-2xl border border-slate-200 dark:border-white/5 flex flex-col h-[500px] shadow-sm dark:shadow-none transition-colors">
+            class="bg-brand-offwhite dark:bg-slate-800/50 p-6 rounded-2xl border border-slate-200 dark:border-white/5 flex flex-col h-[500px] shadow-sm dark:shadow-none transition-colors">
             <!-- Fixed height for scrolling -->
             <div class="flex justify-between items-start mb-4">
                 <div>
@@ -227,7 +227,8 @@
                     <div class="flex justify-between items-start mb-2">
                         <div>
                             <span
-                                class="text-[10px] font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider">{{ svc.day }}
+                                class="text-[10px] font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider">{{
+                                svc.day }}
                                 &bull; {{ svc.time }}</span>
                             <h4 class="font-bold text-slate-800 dark:text-slate-200 text-sm mt-0.5">{{ svc.name }}</h4>
                             <p class="text-[10px] text-slate-500 flex items-center gap-1 mt-1">
@@ -269,7 +270,7 @@
 
         <!-- Giving Trend Chart -->
         <div
-            class="lg:col-span-2 bg-white dark:bg-slate-800/50 p-6 rounded-2xl border border-slate-200 dark:border-white/5 shadow-sm dark:shadow-none transition-colors">
+            class="lg:col-span-2 bg-brand-offwhite dark:bg-slate-800/50 p-6 rounded-2xl border border-slate-200 dark:border-white/5 shadow-sm dark:shadow-none transition-colors">
             <div class="flex justify-between items-center mb-6">
                 <div>
                     <h3 class="text-lg font-bold text-slate-900 dark:text-white">Total Giving Trend</h3>
@@ -286,7 +287,7 @@
 
         <!-- Upcoming Events (Replaces Recent Activity) -->
         <div
-            class="bg-white dark:bg-slate-800/50 p-6 rounded-2xl border border-slate-200 dark:border-white/5 flex flex-col h-[400px] shadow-sm dark:shadow-none transition-colors">
+            class="bg-brand-offwhite dark:bg-slate-800/50 p-6 rounded-2xl border border-slate-200 dark:border-white/5 flex flex-col h-[400px] shadow-sm dark:shadow-none transition-colors">
             <div class="flex justify-between items-start mb-4">
                 <h3 class="text-lg font-bold text-slate-900 dark:text-white">Upcoming Events</h3>
                 <i data-lucide="calendar" class="w-4 h-4 text-slate-400"></i>
@@ -306,9 +307,11 @@
                         <h4 class="text-sm font-bold text-slate-800 dark:text-slate-200 line-clamp-1">{{ event.title }}
                         </h4>
                         <div class="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-                            <span class="flex items-center gap-1"><i data-lucide="clock" class="w-3 h-3"></i> {{ event.start_date|time:"g:i A" }}</span>
+                            <span class="flex items-center gap-1"><i data-lucide="clock" class="w-3 h-3"></i> {{
+                                event.start_date|time:"g:i A" }}</span>
                             {% if event.location %}
-                            <span class="flex items-center gap-1"><i data-lucide="map-pin" class="w-3 h-3"></i> {{ event.location|truncatechars:15 }}</span>
+                            <span class="flex items-center gap-1"><i data-lucide="map-pin" class="w-3 h-3"></i> {{
+                                event.location|truncatechars:15 }}</span>
                             {% endif %}
                         </div>
                         <span
@@ -336,7 +339,7 @@
 
         <!-- Top Parishes List (Replaces Active Ministries) -->
         <div
-            class="bg-white dark:bg-slate-800/50 p-6 rounded-2xl border border-slate-200 dark:border-white/5 shadow-sm dark:shadow-none transition-colors">
+            class="bg-brand-offwhite dark:bg-slate-800/50 p-6 rounded-2xl border border-slate-200 dark:border-white/5 shadow-sm dark:shadow-none transition-colors">
             <div class="flex justify-between items-start mb-4">
                 <h3 class="text-lg font-bold text-slate-900 dark:text-white">Member Parishes</h3>
                 <span
@@ -389,7 +392,7 @@
 
         <!-- Expense Trend Chart (Replaces Volunteer/Impact) -->
         <div
-            class="md:col-span-2 bg-white dark:bg-slate-800/50 p-6 rounded-2xl border border-slate-200 dark:border-white/5 shadow-sm dark:shadow-none transition-colors">
+            class="md:col-span-2 bg-brand-offwhite dark:bg-slate-800/50 p-6 rounded-2xl border border-slate-200 dark:border-white/5 shadow-sm dark:shadow-none transition-colors">
             <div class="flex justify-between items-center mb-6">
                 <div>
                     <h3 class="text-lg font-bold text-slate-900 dark:text-white">Total Expense Trend</h3>
@@ -536,7 +539,7 @@
                             if (label) {
                                 label += ': ';
                             }
-                            if (context.parsed.y ! == null) {
+                            if (context.parsed.y! == null) {
                                 label += new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(context.parsed.y);
                             }
                             return label;
@@ -609,7 +612,7 @@
                             if (label) {
                                 label += ': ';
                             }
-                            if (context.parsed.y ! == null) {
+                            if (context.parsed.y! == null) {
                                 label += new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(context.parsed.y);
                             }
                             return label;
@@ -632,4 +635,3 @@
     });
 </script>
 {% endblock %}
-
