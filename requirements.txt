@@ -196,9 +196,9 @@ streamlit==1.41.1
 StrEnum==0.4.15
 strictyaml==1.7.3
 stripe==11.5.0
-supabase==2.11.0
-supabase-auth==2.11.0
-supabase-functions==0.0.3
+supabase
+supabase-auth
+supabase-functions>=2.27.2
 sympy==1.13.3
 tenacity==9.0.0
 termcolor==2.5.0
@@ -233,4 +233,5 @@ xxhash==3.5.0
 yarl==1.18.3
 zipp==3.21.0
 zstandard==0.23.0
+
 
