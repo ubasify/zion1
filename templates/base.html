@@ -404,7 +404,11 @@
                 <div class="flex-1 min-w-0 transition-opacity duration-200"
                     :class="sidebarCollapsed ? 'lg:opacity-0 lg:hidden' : 'opacity-100'">
                     <p class="text-sm font-medium text-white truncate">{{ request.user.username }}</p>
-                    <a href="{% url 'logout' %}" class="text-xs text-brand-red hover:underline">Log Out</a>
+                    <form id="logout-form" action="{% url 'logout' %}" method="post" class="hidden">
+                        {% csrf_token %}
+                    </form>
+                    <a href="javascript:void(0)" onclick="document.getElementById('logout-form').submit();"
+                        class="text-xs text-brand-red hover:underline">Log Out</a>
                 </div>
             </div>
 
