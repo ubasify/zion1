@@ -35,7 +35,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y libjpeg-dev zlib1g-dev libtiff-dev libfreetype6-dev \
             liblcms2-dev libwebp-dev tcl8.6-dev tk8.6-dev python3-tk \
-            libharfbuzz-dev libfribidi-dev libxcb1-dev
+            libharfbuzz-dev libfribidi-dev libxcb1-dev libmysqlclient-dev pkg-config
 
       # 🛠️ Local Build Section (Optional)
       # The following section in your workflow is designed to catch build issues early on the client side, before deployment. This can be helpful for debugging and validation. However, if this step significantly increases deployment time and early detection is not critical for your workflow, you may remove this section to streamline the deployment process.

@@ -120,7 +120,7 @@ packaging==24.2
 pandas==2.2.3
 parso==0.8.4
 passlib==1.7.4
-pillow
+pillow==10.4.0
 platformdirs==4.3.6
 plotly==6.2.0
 pluggy==1.6.0
