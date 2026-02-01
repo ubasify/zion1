@@ -3,7 +3,9 @@ from .views import (
     AttendanceListView, AttendanceCreateView, AttendanceUpdateView, AttendanceDeleteView,
     FinancialDashboardView, IncomeListView, IncomeCreateView, ExpenseListView, ExpenseCreateView, FinancialReportView,
     LedgerView, BankAccountListView, BankAccountCreateView, BankAccountUpdateView,
-    BudgetListView, BudgetCreateView, BudgetUpdateView
+    BudgetListView, BudgetCreateView, BudgetUpdateView,
+    CommunityImpactListView, CommunityImpactCreateView,
+    AnnouncementListView, AnnouncementCreateView
 )
 
 urlpatterns = [
@@ -30,4 +32,12 @@ urlpatterns = [
     path('budgets/', BudgetListView.as_view(), name='budget-list'),
     path('budgets/new/', BudgetCreateView.as_view(), name='budget-create'),
     path('budgets/<int:pk>/edit/', BudgetUpdateView.as_view(), name='budget-edit'),
+
+    # Community Impact
+    path('impact/', CommunityImpactListView.as_view(), name='impact-list'),
+    path('impact/new/', CommunityImpactCreateView.as_view(), name='impact-create'),
+
+    # Announcements
+    path('announcements/', AnnouncementListView.as_view(), name='announcement-list'),
+    path('announcements/new/', AnnouncementCreateView.as_view(), name='announcement-create'),
 ]

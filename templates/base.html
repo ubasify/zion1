@@ -194,12 +194,22 @@
 
             <a href="{% url 'visitor-list' %}"
                 class="sidebar-link flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-white/5 transition-all text-sm font-medium {% if 'outreach' in request.path %}active{% endif %}"
-                title="Visitors">
+                title="Outreach">
                 <div class="flex-shrink-0 w-6 h-6 flex items-center justify-center">
-                    <i data-lucide="user-plus" class="w-5 h-5"></i>
+                    <i data-lucide="compass" class="w-5 h-5"></i>
                 </div>
                 <span class="whitespace-nowrap transition-opacity duration-200"
-                    :class="sidebarCollapsed ? 'lg:opacity-0 lg:hidden' : 'opacity-100'">Visitors</span>
+                    :class="sidebarCollapsed ? 'lg:opacity-0 lg:hidden' : 'opacity-100'">Outreach</span>
+            </a>
+
+            <a href="{% url 'impact-list' %}"
+                class="sidebar-link flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-white/5 transition-all text-sm font-medium {% if 'impact' in request.path %}active{% endif %}"
+                title="Community Impact">
+                <div class="flex-shrink-0 w-6 h-6 flex items-center justify-center">
+                    <i data-lucide="heart" class="w-5 h-5"></i>
+                </div>
+                <span class="whitespace-nowrap transition-opacity duration-200"
+                    :class="sidebarCollapsed ? 'lg:opacity-0 lg:hidden' : 'opacity-100'">Community Impact</span>
             </a>
 
             <a href="{% url 'ministry-list' %}"
@@ -230,6 +240,16 @@
                 </div>
                 <span class="whitespace-nowrap transition-opacity duration-200"
                     :class="sidebarCollapsed ? 'lg:opacity-0 lg:hidden' : 'opacity-100'">Events</span>
+            </a>
+
+            <a href="{% url 'announcement-list' %}"
+                class="sidebar-link flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-white/5 transition-all text-sm font-medium {% if 'announcements' in request.path %}active{% endif %}"
+                title="Announcements">
+                <div class="flex-shrink-0 w-6 h-6 flex items-center justify-center">
+                    <i data-lucide="megaphone" class="w-5 h-5"></i>
+                </div>
+                <span class="whitespace-nowrap transition-opacity duration-200"
+                    :class="sidebarCollapsed ? 'lg:opacity-0 lg:hidden' : 'opacity-100'">Announcements</span>
             </a>
 
             <!-- Moved to Finance section below -->

@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models.functions import TruncMonth
-from .models import Attendance, Finance, Expense, BankAccount, Budget
+from .models import Attendance, Finance, Expense, BankAccount, Budget, CommunityImpact, Announcement
 from ministry.models import Service, Event
 from people.models import Member
 from .forms import AttendanceForm, IncomeForm, ExpenseForm
@@ -469,4 +469,31 @@ class FinancialReportView(LoginRequiredMixin, TemplateView):
                 })
             ctx['monthly_data'] = data
             
-        return ctx
+
+# --- COMMUNITY IMPACT ---
+
+class CommunityImpactListView(LoginRequiredMixin, ListView):
+    model = CommunityImpact
+    template_name = "operations/impact_list.html"
+    context_object_name = "impacts"
+    paginate_by = 10
+
+class CommunityImpactCreateView(LoginRequiredMixin, CreateView):
+    model = CommunityImpact
+    fields = ['name', 'description', 'date', 'people_impacted']
+    template_name = "operations/form_modal.html"
+    success_url = reverse_lazy('impact-list')
+
+# --- ANNOUNCEMENTS ---
+
+class AnnouncementListView(LoginRequiredMixin, ListView):
+    model = Announcement
+    template_name = "operations/announcement_list.html"
+    context_object_name = "announcements"
+    paginate_by = 10
+
+class AnnouncementCreateView(LoginRequiredMixin, CreateView):
+    model = Announcement
+    fields = ['title', 'content', 'is_public']
+    template_name = "operations/form_modal.html"
+    success_url = reverse_lazy('announcement-list')

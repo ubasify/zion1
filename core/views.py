@@ -242,6 +242,13 @@ class DashboardView(LoginRequiredMixin, TemplateView):
         # Fallback to avoid division by zero
         retention_rate = int((active_mems / total_mems) * 100) if total_mems > 0 else 0
 
+        # 6. Community Impact (Total People Reached)
+        if filter_start and filter_end:
+            total_impact = CommunityImpact.objects.filter(date__range=[filter_start, filter_end])\
+                .aggregate(sum=Sum('people_impacted'))['sum'] or 0
+        else:
+            total_impact = CommunityImpact.objects.aggregate(sum=Sum('people_impacted'))['sum'] or 0
+
         # ...
         
         # 5. Attendance Trends
@@ -435,6 +442,17 @@ class DashboardView(LoginRequiredMixin, TemplateView):
                 'color': 'blue'
             })
             
+        # Community Impact in Activity Stream
+        recent_impacts = CommunityImpact.objects.filter(date__range=[act_start, act_end]).order_by('-date')[:5]
+        for i in recent_impacts:
+            activity_stream.append({
+                'type': 'impact',
+                'date': i.date,
+                'title': i.name,
+                'desc': f'Reached: {i.people_impacted}',
+                'icon': 'heart',
+                'color': 'teal'
+            })
         # Sort combined stream by date desc
         activity_stream.sort(key=lambda x: x['date'], reverse=True)
         activity_stream = activity_stream[:10] # increased limit
@@ -500,7 +518,8 @@ class DashboardView(LoginRequiredMixin, TemplateView):
                 'weekly_giving': int(weekly_giving) if weekly_giving else 0,
                 'giving_percentage': giving_percentage,
                 'retention_rate': retention_rate,
-                'total_members': Member.objects.count()
+                'total_members': Member.objects.count(),
+                'total_impact': total_impact,
             },
             'parish_list': parish_list,
             # 'health_score': health_score, # Deprecated
