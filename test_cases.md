@@ -38,7 +38,7 @@ This document provides a full suite of test cases to verify the end-to-end funct
 
 ## 5. Ministry & Outreach
 | ID | Module | Action | Expected Result | Pass (Yes/No) | Remarks |
-| :--- | :--- | : :--- | :--- | :--- | :--- |
+| :--- | :--- | :--- | :--- | :--- | :--- |
 | 5.1 | **Ministry** | **CRUD**: Create, Edit, and List Ministries | Ministry structure correctly managed; shown in Sidebar. | | |
 | 5.2 | **Outreach** | Convert a **Visitor** to a **Member** | Visitor status updates to "Converted"; Member record created. | | |
 | 5.3 | **Impact** | Record a **Community Impact** event | "People Reached" metric updates on the Main Dashboard. | | |
